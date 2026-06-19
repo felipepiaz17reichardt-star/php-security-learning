@@ -1,0 +1,10 @@
+# Ignorar credenciais locais do banco de dados
+db/conexao.php
+
+# Ignorar arquivos de configuração de ambiente
+.env
+.env.local
+
+# Ignorar pastas de ferramentas de desenvolvimento ou logs
+.vscode/
+*.log
