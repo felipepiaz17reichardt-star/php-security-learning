@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $senha = $_POST['senha'];
 
-    // DEFESA CONTRA SQLi: Buscamos APENAS pelo usuário usando Prepared Statement
+    // DEFESA CONTRA SQLi: Busca APENAS pelo usuário usando Prepared Statement
     $stmt = $conn->prepare("SELECT * FROM administradores WHERE usuario = ?");
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="login-box">
         <h2>Dojo Login</h2>
-        <div class="subtitle">Insira ususario e senha</div>
+        <div class="subtitle">Insira usuario e senha</div>
 
         <?php if (!empty($erro)): ?>
             <div class="alert alert-danger"><?php echo $erro; ?></div>
