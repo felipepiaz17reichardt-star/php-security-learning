@@ -18,6 +18,12 @@ $labs = [
         'categoria' => 'XSS',
         'ativo'     => 1
     ],
+    [
+        'titulo'    => 'CSRF',
+        'descricao' => 'Aprender sobre Cross-Site Request Forgery',
+        'categoria' => 'CSRF',
+        'ativo'     => 1
+    ],
 ];
 
 $stmt = $conn->prepare("INSERT INTO labs (titulo, descricao, categoria, ativo) VALUES (?, ?, ?, ?)");
