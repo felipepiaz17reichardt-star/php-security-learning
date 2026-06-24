@@ -1,49 +1,54 @@
 <?php
 session_set_cookie_params([
     'httponly' => true,
-    'secure' => true,
+    'secure'   => false,  // ← false em localhost
+    //'secure'   => true, // ← true em produção
     'samesite' => 'Strict'
 ]);
 session_start();
 require_once 'db/conexao.php';
 
-$erro = "";
+// Já logado? Vai direto para os labs
+if (isset($_SESSION['user_id'])) {
+    header("Location: modulos/index.php");
+    exit;
+}
+
+$erro   = "";
 $sucesso = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = trim($_POST['usuario']);
-    $senha = $_POST['senha'];
+    $senha   = $_POST['senha'];
 
-    if (!empty($usuario) && !empty($senha)) {
-        
-        // DEFESA: Verifica se o usuário já existe na tabela 'clientes'
+    if (empty($usuario) || empty($senha)) {
+        $erro = "Preencha todos os campos.";
+    } elseif (strlen($usuario) < 3) {
+        $erro = "Usuário deve ter pelo menos 3 caracteres.";
+    } elseif (strlen($senha) < 6) {
+        $erro = "Senha deve ter pelo menos 6 caracteres.";
+    } else {
         $stmt_check = $conn->prepare("SELECT id FROM usuarios WHERE usuario = ?");
         $stmt_check->bind_param("s", $usuario);
         $stmt_check->execute();
         $res_check = $stmt_check->get_result();
 
         if ($res_check->num_rows > 0) {
-            $erro = "Este nome de usuário já está sendo usado!";
+            $erro = "Este nome de usuário já está em uso.";
         } else {
-            // SEGURANÇA: Cria o hash seguro da senha
-            $senha_com_hash = password_hash($senha, PASSWORD_DEFAULT);
+            $hash = password_hash($senha, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare("INSERT INTO usuarios (usuario, senha) VALUES (?, ?)");
+            $stmt->bind_param("ss", $usuario, $hash);
 
-            // DEFESA: Insere o novo usuário comum no banco usando Prepared Statement
-            $stmt_insert = $conn->prepare("INSERT INTO usuarios (usuario, senha) VALUES (?, ?)");
-            $stmt_insert->bind_param("ss", $usuario, $senha_com_hash);
-
-            if ($stmt_insert->execute()) {
-                // Redireciona para o login passando uma mensagem de sucesso na URL
+            if ($stmt->execute()) {
                 header("Location: login.php?cadastro=sucesso");
                 exit;
             } else {
-                $erro = "Algo deu errado ao criar a conta. Tente novamente.";
+                $erro = "Erro ao criar conta. Tente novamente.";
             }
-            $stmt_insert->close();
+            $stmt->close();
         }
         $stmt_check->close();
-    } else {
-        $erro = "Preencha todos os campos!";
     }
 }
 ?>
@@ -51,35 +56,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro - CyberSec Dojo</title>
+    <title>Cadastro — CyberSec Dojo</title>
     <link rel="stylesheet" href="CSS/index.css">
 </head>
 <body>
-
     <div class="login-box">
         <h2>Criar Conta</h2>
-        <div class="subtitle">Cadastre seu usuário no Dojo</div>
+        <div class="subtitle">Registre-se para acessar os laboratórios</div>
 
         <?php if (!empty($erro)): ?>
-            <div class="alert alert-danger"><?php echo htmlspecialchars($erro, ENT_QUOTES, 'UTF-8'); ?></div>
+            <div class="alert alert-danger"><?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
         <form action="cadastro.php" method="POST">
             <div class="form-group">
-                <label for="usuario">Escolha um Usuário</label>
-                <input type="text" id="usuario" name="usuario" required autocomplete="off">
+                <label for="usuario">Usuário</label>
+                <input type="text" id="usuario" name="usuario"
+                       value="<?= htmlspecialchars($_POST['usuario'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                       required autocomplete="off" minlength="3">
             </div>
             <div class="form-group">
-                <label for="senha">Escolha uma Senha</label>
-                <input type="password" id="senha" name="senha" required>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required minlength="6">
             </div>
-            <button type="submit">Cadastrar</button>
+            <button type="submit">Criar conta</button>
         </form>
 
-        <div style="text-align: center; margin-top: 15px;">
-            <a href="login.php" style="color: #0056b3; text-decoration: none; font-size: 14px;">Já tem uma conta? Faça login</a>
-        </div>
+        <a href="login.php" class="link-alt">Já tem uma conta? Faça login</a>
     </div>
-
 </body>
 </html>

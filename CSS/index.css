@@ -1,103 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg:        #0a0c10;
+    --surface:   #111318;
+    --border:    #1f2330;
+    --accent:    #00e5ff;
+    --accent-dim:#007a8a;
+    --danger:    #ff4d6d;
+    --success:   #00e676;
+    --text:      #c9d1d9;
+    --muted:     #4a5568;
+    --mono:      'Share Tech Mono', monospace;
+    --sans:      'Inter', sans-serif;
+}
+
 body {
-    background-color: #ffffff;
-    color: #333333;
-    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
+    justify-content: center;
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(0,229,255,0.04) 0%, transparent 60%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(31,35,48,0.4) 39px, rgba(31,35,48,0.4) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(31,35,48,0.4) 39px, rgba(31,35,48,0.4) 40px);
 }
 
-/* Caixa de login atualizada com a borda azul e quinas retas */
 .login-box {
-    background-color: #efefee;
-    padding: 40px;
-    border-radius: 0px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    border-radius: 4px;
+    padding: 40px 36px;
     width: 100%;
-    max-width: 360px;
-    border: 1px solid #a5a5a5;
-    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 0 40px rgba(0,229,255,0.06), 0 20px 40px rgba(0,0,0,0.4);
 }
 
-/* Título do formulário */
-h2 {
-    color: #1d1d1d;
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 24px;
+.login-box h2 {
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: 2px;
     text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.login-box h2::before {
+    content: '> ';
+    color: var(--accent-dim);
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-bottom: 28px;
     letter-spacing: 1px;
 }
 
-/* Subtítulo */
-.subtitle {
-    color: #666666;
-    font-size: 14px;
-    margin-bottom: 25px;
-}
-
-/* Organização dos blocos de input */
 .form-group {
-    margin-bottom: 20px;
-    text-align: left; 
+    margin-bottom: 18px;
 }
 
-/* Estilo dos rótulos dos campos */
-label {
+.form-group label {
     display: block;
-    color: #333333;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: var(--mono);
 }
 
-/* Estilo dos campos de texto e senha */
-input[type="text"],
-input[type="password"] {
+.form-group input {
     width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #cccccc;
-    border-radius: 0px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--mono);
     font-size: 14px;
-    background-color: #ffffff;
-}
-
-/* Efeito de foco nos campos de texto e senha */
-input[type="text"]:focus,
-input[type="password"]:focus {
     outline: none;
-    border: 1px solid #0056b3;
+    transition: border-color 0.2s;
 }
 
-/* Estilo do botão de login */
-button {
+.form-group input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0,229,255,0.08);
+}
+
+button[type="submit"] {
     width: 100%;
-    background-color: #0056b3;
-    color: #ffffff;
-    border: 1px solid #0056b3;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     padding: 12px;
-    font-weight: bold;
-    font-size: 14px;
+    border-radius: 3px;
     cursor: pointer;
-    border-radius: 0px; 
-    transition: background-color 0.1s ease;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 6px;
 }
 
-/* Efeito ao passar o mouse*/
-button:hover {
-    background-color: #ffffff;
-    color: #0056b3;
+button[type="submit"]:hover {
+    background: var(--accent);
+    color: var(--bg);
 }
 
-/* Para mensagens de erro */
+.alert {
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+}
+
 .alert-danger {
-    background-color: #fde8e8;
-    color: #e04444;
-    border: 1px solid #e04444;
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    text-align: left;
+    background: rgba(255,77,109,0.1);
+    border: 1px solid rgba(255,77,109,0.3);
+    color: var(--danger);
 }
+
+.alert-success {
+    background: rgba(0,230,118,0.08);
+    border: 1px solid rgba(0,230,118,0.25);
+    color: var(--success);
+}
+
+.link-alt {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.link-alt:hover { color: var(--accent); }
