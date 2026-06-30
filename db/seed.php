@@ -19,9 +19,9 @@ $labs = [
         'ativo'     => 1
     ],
     [
-        'titulo'    => 'CSRF',
-        'descricao' => 'Aprender sobre Cross-Site Request Forgery',
-        'categoria' => 'CSRF',
+        'titulo'    => 'Broken Authentication / Brute Force',
+        'descricao' => 'Aprenda sobre autenticação quebrada e teste ataques de força bruta em um sistema vulnerável.',
+        'categoria' => 'Authentication',
         'ativo'     => 1
     ],
 ];

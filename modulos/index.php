@@ -41,13 +41,14 @@ $total_completos = count($completados);
         <span style="color: var(--muted); font-size:11px;">
             <?= $total_completos ?>/<?= $total_labs ?> labs concluídos
         </span>
+        <a href="reset_senha.php" class="btn-logout">Alterar Senha</a>
         <a href="../logout.php" class="btn-logout">Sair</a>
     </div>
 </nav>
 
 <div class="container">
     <div class="page-header">
-        <h1>Laboratórios</h1>
+        <h1>Laboratórios</h1> 
         <p>Escolha um módulo para começar. Complete os desafios para registrar seu progresso.</p>
     </div>
 
@@ -57,7 +58,7 @@ $total_completos = count($completados);
         while ($lab = $labs->fetch_assoc()):
             $done      = isset($completados[$lab['id']]);
             $cat_class = strtolower($lab['categoria']) === 'xss' ? 'xss' : '';
-            $file_map  = ['SQLi' => 'sqli.php', 'XSS' => 'xss.php', 'CSRF' => 'csrf.php'];
+            $file_map  = ['SQLi' => 'sqli.php', 'XSS' => 'xss.php', 'CSRF' => 'csrf.php', 'Authentication' => 'bruteforce.php'];
             $file      = $file_map[$lab['categoria']] ?? '#';
         ?>
         <a href="<?= $file ?>" class="lab-card <?= $cat_class ?>">
